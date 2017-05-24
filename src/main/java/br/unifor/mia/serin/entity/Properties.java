@@ -1,5 +1,6 @@
 package br.unifor.mia.serin.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,30 +14,31 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-public class Columns {
+public class Properties {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@ApiModelProperty(notes = "Id gerado da tabela columns.")
+	@ApiModelProperty(notes = "Id gerado da tabela de propriedades.")
 	private Long id;
 
-	@ApiModelProperty(notes = "Nome da coluna.")
+	@ApiModelProperty(notes = "Nome da propriedade.")
 	private String name;
 
-	@ApiModelProperty(notes = "Tipo da coluna.")
+	@ApiModelProperty(notes = "Tipo da propriedade.")
 	private String type;
 
-	@ApiModelProperty(notes = "Indica se a coluna é ou não requerida.")
+	@ApiModelProperty(notes = "Indica se a propriedade é ou não requerida.")
 	private Boolean required;
 
-	@ApiModelProperty(notes = "Indica o valor padrão para uma coluna.")
-	private String padrao;
+	@Column(name = "default_value")
+	@ApiModelProperty(notes = "Indica o valor padrão para uma propriedade.")
+	private String defaultValue;
 
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "table_id")
+	@JoinColumn(name = "subject_id")
 	@ApiModelProperty(notes = "Tabela a qual a coluna pertence.")
-	private Tables table;
+	private Subjects subject;
 
 	public Long getId() {
 		return id;
@@ -70,20 +72,20 @@ public class Columns {
 		this.required = required;
 	}
 
-	public String getPadrao() {
-		return padrao;
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
-	public void setPadrao(String padrao) {
-		this.padrao = padrao;
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
-	public Tables getTable() {
-		return table;
+	public Subjects getSubject() {
+		return subject;
 	}
 
-	public void setTable(Tables table) {
-		this.table = table;
+	public void setSubject(Subjects subject) {
+		this.subject = subject;
 	}
 
 	@Override
@@ -102,7 +104,7 @@ public class Columns {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Columns other = (Columns) obj;
+		Properties other = (Properties) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -14,22 +14,23 @@ import javax.persistence.OneToMany;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "Domains.findByName",
-			query = "select d from Domains d where d.name = :name")
-})
-public class Domains {
+@NamedQueries({ @NamedQuery(name = "Schema.findByName", query = "select s from Schema s where s.name = :name"),
+		@NamedQuery(name = "Schema.findByNameAndVersion", query = "select s from Schema s where s.name= :name and s.version = :version") })
+public class Schema {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@ApiModelProperty(notes = "id gerado para tabela domain.")
 	private Long id;
-	
+
 	@ApiModelProperty(notes = "Nome do domínio.")
 	private String name;
-	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="domain")
-	private List<Tables> tabelas;
+
+	@ApiModelProperty(notes = "Indica qual é a versão do schema.")
+	private String version;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "schema")
+	private List<Subjects> subjects;
 
 	public Long getId() {
 		return id;
@@ -47,12 +48,20 @@ public class Domains {
 		this.name = name;
 	}
 
-	public List<Tables> getTabelas() {
-		return tabelas;
+	public List<Subjects> getSubjects() {
+		return subjects;
 	}
 
-	public void setTabelas(List<Tables> tabelas) {
-		this.tabelas = tabelas;
+	public void setSubjects(List<Subjects> subjects) {
+		this.subjects = subjects;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public class Domains {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Domains other = (Domains) obj;
+		Schema other = (Schema) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -79,5 +88,5 @@ public class Domains {
 			return false;
 		return true;
 	}
-	
+
 }

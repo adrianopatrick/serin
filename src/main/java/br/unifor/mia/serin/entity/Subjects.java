@@ -16,24 +16,25 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-public class Tables {
-	
+public class Subjects {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@ApiModelProperty(notes="id da tabela table gerado.")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(notes = "id da tabela table gerado.")
 	private Long id;
-	
-	@ApiModelProperty(notes="Nome da tabela.")
-	private String nome;
-	
+
+	@ApiModelProperty(notes = "Nome da tabela.")
+	private String name;
+
 	@JsonBackReference
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="domain_id")
-	@ApiModelProperty(notes="Domínio a qual pertence a tabela.")
-	private Domains domain;
-	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="table")
-	private List<Columns> colunas;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "schema_id")
+	@ApiModelProperty(notes = "Domínio a qual pertence a tabela.")
+	private Schema schema;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "subject")
+	@ApiModelProperty(notes = "Lista de propriedades do sujeito.")
+	private List<Properties> properties;
 
 	public Long getId() {
 		return id;
@@ -43,28 +44,28 @@ public class Tables {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Domains getDomain() {
-		return domain;
+	public Schema getSchema() {
+		return schema;
 	}
 
-	public void setDomain(Domains domain) {
-		this.domain = domain;
+	public void setSchema(Schema schema) {
+		this.schema = schema;
 	}
 
-	public List<Columns> getColunas() {
-		return colunas;
+	public List<Properties> getProperties() {
+		return properties;
 	}
 
-	public void setColunas(List<Columns> colunas) {
-		this.colunas = colunas;
+	public void setProperties(List<Properties> properties) {
+		this.properties = properties;
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class Tables {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tables other = (Tables) obj;
+		Subjects other = (Subjects) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

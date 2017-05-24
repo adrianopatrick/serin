@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.unifor.mia.serin.entity.Domains;
-import br.unifor.mia.serin.service.DomainService;
+import br.unifor.mia.serin.entity.Schema;
+import br.unifor.mia.serin.service.SchemaService;
 
 @RestController
-public class DomainRest {
+public class SchemaRest {
 
 	@Inject
-	private DomainService domainService;
+	private SchemaService schemaService;
 
-	@RequestMapping(value = "/domain", method = RequestMethod.GET)
-	public ResponseEntity<Domains> getDomainByName(@RequestParam(value = "name") String name) {
+	@RequestMapping(value = "/schema", method = RequestMethod.GET)
+	public ResponseEntity<Schema> getSchemaByName(@RequestParam(value = "name") String name,
+			@RequestParam(value = "version", required = false) String version) {
+		System.out.println("[INFO] CALL SCHEMA");
 		try {
-			System.out.println("RESQUEST NAME: " + name);
-			Domains domain = this.domainService.getDomainByName(name);
-			if (domain != null) {
-				System.out.println("DOMAINS:" + domain.getTabelas());
-				return new ResponseEntity<>(domain, HttpStatus.OK);
+			Schema schema = this.schemaService.getSchema(name, version);
+			if (schema != null) {
+				return new ResponseEntity<>(schema, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
